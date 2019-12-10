@@ -3,8 +3,9 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
-from python_sql_driver import search
+from dash.dependencies import Input, Output, State
+
+# from python_sql_driver import search
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -39,16 +40,18 @@ body = html.Div(id="body-hold", className="mt-3")
 
 # the body for the search functionality
 # thinking about potentially making these into dropdowns instead of inputs
-# TODO: start with searching on one attribute
 search_body = html.Div([
     dbc.Row([dbc.Col(
                 # title input
-                [html.Div("Enter a Title:"),
+                [dcc.Markdown("## Search for movies by title, genre, actors, or type!"),
+                 dcc.Markdown("###### Type information into one of the input boxes below and click the corresponding button to search for movies."),
+                 html.Div("Enter a Title:"),
                  dcc.Input(
                     placeholder='Title',
                     type='text',
                     value='',
                     id="search-title"),
+                 html.Button("Search for movies based on title", id='title-button', n_clicks_timestamp=0),
                  # genre input
                  html.Div("Enter a Genre:"),
                  dcc.Input(
@@ -56,6 +59,7 @@ search_body = html.Div([
                     type='text',
                     value='',
                     id="search-genre"),
+                 html.Button("Search for movies of the same genre", id='genre-button', n_clicks_timestamp=0),
                  # actor input
                  html.Div("Enter an Actor/Actress:"),
                  dcc.Input(
@@ -63,15 +67,16 @@ search_body = html.Div([
                     type='text',
                     value='',
                     id="search-actor"),
+                 html.Button("Search for movies by actor/actress", id='actor-button', n_clicks_timestamp=0),
                  # type input
                  html.Div("Enter a Type of Movie (alternative, dvd, festival, tv, video):"),
                  dcc.Input(
-                    placeholder='Language',
+                    placeholder='Type',
                     type='text',
                     value='',
-                    id="search-language"),
-                 html.Button("Search for Movies", id='search-button')]),
-                # could add a region or language search as well
+                    id="search-type"),
+                 html.Button("Search for movies of the same type", id='type-button', n_clicks_timestamp=0)]),
+                
              dbc.Col(
                 html.Div(["Movie Data"], id="search-movie-data"))])])
 
@@ -104,13 +109,36 @@ recommend_body = html.Div([
 
 app.layout = html.Div([navbar, body])
 
-#callback for the search function, will incorporate all of the different values
+
+#callback for the search function
+# search() takes 5 arguments, the four values of the input boxes and what button was clicked
+# 1 for title, 2 for genre, 3 for actor, 4 for type
 @app.callback(
     Output("search-movie-data", "children"),
-    [Input("search-title", "value")]
+    [Input("title-button", "n_clicks_timestamp"),
+     Input("genre-button", "n_clicks_timestamp"),
+     Input("actor-button", "n_clicks_timestamp"),
+     Input("type-button", "n_clicks_timestamp")],
+    [State('search-title', "value"),
+     State('search-genre', "value"),
+     State('search-actor', "value"),
+     State('search-type', "value")]
 )
-def search_for_movie(movie_string):
-    return movie_string
+def search_for_movie(title_click, genre_click, actor_click, type_click, title_value, genre_value, actor_value, type_value):
+    time_max = max(int(title_click), int(genre_click), int(actor_click), int(type_click))
+    if time_max == int(title_click):
+        # data = search(title_value, genre_value, actor_value, type_value, 1)
+        data = title_value
+    if time_max == int(genre_click):
+        # data = search(title_value, genre_value, actor_value, type_value, 2)
+        data = genre_value
+    if time_max == int(actor_click):
+        # data = search(title_value, genre_value, actor_value, type_value, 3)
+        data = actor_value
+    if time_max == int(type_click):
+        # data = search(title_value, genre_value, actor_value, type_value, 4)
+        data = type_value
+    return data
 
 # callback for ranking
 # @app.callback(

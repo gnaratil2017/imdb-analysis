@@ -5,7 +5,7 @@ mycursor = mydb.cursor()
 
 def get_tconst_data(tconsts, primaryTitle, genre, titleType):
     data = []
-    base_query = ("SELECT titleType, primaryTitle, startYear, runtimeMinutes, genres FROM title_basics WHERE tconst = %s")
+    base_query = ("SELECT tconst, titleType, primaryTitle, startYear, runtimeMinutes, genres, averageRating, numVotes FROM title_basics_with_ratings WHERE tconst = %s")
     add_to_query = ""
     add_to_args = ()
     primaryTitleWhere = "primaryTitle LIKE %s"
@@ -72,43 +72,43 @@ def search(primaryTitle, genre, primaryName, titleType):
 
     elif primaryTitle != "%%" and genre != "%%" and titleType != "%%":
         args = (titleType, primaryTitle, genre)
-        query = ("SELECT titleType, primaryTitle, startYear, runtimeMinutes, genres FROM title_basics WHERE " + titleTypeWhere + " AND " + primaryTitleWhere + " AND " + genreWhere)
+        query = ("SELECT tconst, titleType, primaryTitle, startYear, runtimeMinutes, genres, averageRating, numVotes FROM title_basics_with_ratings WHERE " + titleTypeWhere + " AND " + primaryTitleWhere + " AND " + genreWhere)
         mycursor.execute(query, args)
         data = mycursor.fetchall()
 
     elif primaryTitle != "%%" and genre != "%%":
         args = (primaryTitle, genre)
-        query = ("SELECT titleType, primaryTitle, startYear, runtimeMinutes, genres FROM title_basics WHERE " + primaryTitleWhere + " AND " + genreWhere)
+        query = ("SELECT tconst, titleType, primaryTitle, startYear, runtimeMinutes, genres, averageRating, numVotes FROM title_basics_with_ratings WHERE " + primaryTitleWhere + " AND " + genreWhere)
         mycursor.execute(query, args)
         data = mycursor.fetchall()
 
     elif primaryTitle != "%%" and titleType != "%%":
         args = (titleType, primaryTitle)
-        query = ("SELECT titleType, primaryTitle, startYear, runtimeMinutes, genres FROM title_basics WHERE " + titleTypeWhere + " AND " + primaryTitleWhere)
+        query = ("SELECT tconst, titleType, primaryTitle, startYear, runtimeMinutes, genres, averageRating, numVotes FROM title_basics_with_ratings WHERE " + titleTypeWhere + " AND " + primaryTitleWhere)
         mycursor.execute(query, args)
         data = mycursor.fetchall()
 
     elif genre != "%%" and titleType != "%%":
         args = (titleType, genre)
-        query = ("SELECT titleType, primaryTitle, startYear, runtimeMinutes, genres FROM title_basics WHERE " + titleTypeWhere + " AND " + genreWhere)
+        query = ("SELECT tconst, titleType, primaryTitle, startYear, runtimeMinutes, genres, averageRating, numVotes FROM title_basics_with_ratings WHERE " + titleTypeWhere + " AND " + genreWhere)
         mycursor.execute(query, args)
         data = mycursor.fetchall()
 
     elif primaryTitle != "%%":
         args = (primaryTitle, )
-        query = ("SELECT titleType, primaryTitle, startYear, runtimeMinutes, genres FROM title_basics WHERE " + primaryTitleWhere)
+        query = ("SELECT tconst, titleType, primaryTitle, startYear, runtimeMinutes, genres, averageRating, numVotes FROM title_basics_with_ratings WHERE " + primaryTitleWhere)
         mycursor.execute(query, args)
         data = mycursor.fetchall()
     
     elif genre != "%%":
         args = (genre, )
-        query = ("SELECT titleType, primaryTitle, startYear, runtimeMinutes, genres FROM title_basics WHERE " + genreWhere)
+        query = ("SELECT tconst, titleType, primaryTitle, startYear, runtimeMinutes, genres, averageRating, numVotes FROM title_basics_with_ratings WHERE " + genreWhere)
         mycursor.execute(query, args)
         data = mycursor.fetchall()
         
     elif titleType != "%%":
         args = (titleType, )
-        query = ("SELECT titleType, primaryTitle, startYear, runtimeMinutes, genres FROM title_basics WHERE " + titleTypeWhere)
+        query = ("SELECT tconst, titleType, primaryTitle, startYear, runtimeMinutes, genres, averageRating, numVotes FROM title_basics_with_ratings WHERE " + titleTypeWhere)
         mycursor.execute(query, args)
         data = mycursor.fetchall()
 

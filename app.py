@@ -111,6 +111,8 @@ app.layout = html.Div([navbar, body])
 
 
 #callback for the search function
+# search() takes 5 arguments, the four values of the input boxes and what button was clicked
+# 1 for title, 2 for genre, 3 for actor, 4 for type
 @app.callback(
     Output("search-movie-data", "children"),
     [Input("title-button", "n_clicks_timestamp"),
@@ -125,16 +127,16 @@ app.layout = html.Div([navbar, body])
 def search_for_movie(title_click, genre_click, actor_click, type_click, title_value, genre_value, actor_value, type_value):
     time_max = max(int(title_click), int(genre_click), int(actor_click), int(type_click))
     if time_max == int(title_click):
-        # data = search(title_value)
+        # data = search(title_value, genre_value, actor_value, type_value, 1)
         data = title_value
     if time_max == int(genre_click):
-        # data = search(genre_value)
+        # data = search(title_value, genre_value, actor_value, type_value, 2)
         data = genre_value
     if time_max == int(actor_click):
-        # data = search(actor_value)
+        # data = search(title_value, genre_value, actor_value, type_value, 3)
         data = actor_value
     if time_max == int(type_click):
-        # data = search(type_value)
+        # data = search(title_value, genre_value, actor_value, type_value, 4)
         data = type_value
     return data
 

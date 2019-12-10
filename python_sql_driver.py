@@ -1,7 +1,10 @@
 import mysql.connector
 
-cnx = mysql.connector.connect(user='root', database='imdb')
+cnx = mysql.connector.connect(user='root', password='MySQL2019', database='imdb')
 
-curA = cxn.curson(buffered=True)
+curA = cnx.cursor(buffered=True)
+
+query = (
+	)
 
 # query = ("")

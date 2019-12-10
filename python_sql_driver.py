@@ -49,6 +49,7 @@ def get_tconst_data(tconsts, primaryTitle, genre, titleType):
     return data
 
 def search(primaryTitle, genre, primaryName, titleType):
+    data = []
     primaryTitle = "%" + primaryTitle + "%"
     genre = "%" + genre + "%"
     primaryName = "%" + primaryName + "%"
@@ -63,7 +64,6 @@ def search(primaryTitle, genre, primaryName, titleType):
         query = ("SELECT knownForTitles FROM name_basics WHERE " + primaryNameWhere)
         mycursor.execute(query, args)
         myresult = mycursor.fetchall()
-        data = []
         for person in myresult:
             if person[0]:
                 tconsts_str = person[0]

@@ -39,6 +39,7 @@ body = html.Div(id="body-hold", className="mt-3")
 
 # the body for the search functionality
 # thinking about potentially making these into dropdowns instead of inputs
+# TODO: start with searching on one attribute
 search_body = html.Div([
     dbc.Row([dbc.Col(
                 # title input

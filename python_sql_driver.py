@@ -1,7 +1,15 @@
 import mysql.connector
 
-cnx = mysql.connector.connect(user='root', database='imdb')
+mydb = mysql.connector.connect(user='root', passwd='ThisClassFuckingSucks666!', database='imdb')
+mycursor = mydb.cursor()
 
-curA = cxn.curson(buffered=True)
+def search(primaryTitle, genre, primaryName, titleType):
+    primaryName = "%" + primaryName + "%"
+    args = (primaryName, )
+    query = ("SELECT * FROM name_basics WHERE primaryName LIKE %s")
+    mycursor.execute(query, args)
+    myresult = mycursor.fetchall()
+    for x in myresult:
+        print(x)
 
-# query = ("")
+search("", "", "Ingmar Bergman", "")

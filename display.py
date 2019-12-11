@@ -9,13 +9,12 @@ def createTableSearch(data):
 	rows = []
 
 	for i in range(len(data)):
-		print(data[i][6])
 		row = html.Tr([html.Td(data[i][2]), html.Td(data[i][5]), html.Td(data[i][6]), html.Td(data[i][4]), html.Td(data[i][3])])
 		rows.append(row)
 
 	table_body = [html.Tbody(rows)]
 
-	table = dbc.Table(table_header + table_body, bordered=True, striped = True, hover=True, dark=True)
+	table = dbc.Table(table_header + table_body, bordered=True, striped = True, hover=True)
 
 	return table
 

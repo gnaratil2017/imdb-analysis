@@ -94,14 +94,41 @@ rank_body = html.Div([
                                         value="movie")]),
                      dbc.Col([dcc.Markdown("###### Choose minimum ratings for ranked films:"),
                               dbc.Input(id="min-ratings", value=10000, type='number', min=0, step=1)])]),
+            html.Br(),
             dcc.Markdown("###### Rank by Genre:"),
-            dbc.Row([dbc.Col(dbc.Select(id='genre-rank-select',
+            dbc.Row([dbc.Col(dbc.Select(id='genre-rank',
                                        options=[
                                             {'label': 'stand-in', 'value': 'null'}])),
                     dbc.Col(dbc.Button("Rank!", color='success', id='genre-rank-button'))]),
-            dcc.Markdown("###### Rank by Type:")]),
+            html.Br(),
+            dcc.Markdown("###### Rank by Type (note this overrides the type filter above):"),
+            dbc.Row([dbc.Col(dbc.Select(id='type-rank',
+                                        options=[
+                                                {'label':'Movies', 'value':'movie'},
+                                                {'label':'Shorts', 'value':'short'},
+                                                {'label':'TV Series', 'value':'tvSeries'}])),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='type-rank-button'))]),
+            html.Br(),
+            dcc.Markdown("###### Rank by Time Period (will rank all movies within the range below):"),
+            dbc.Row([dbc.Col(dcc.Markdown("###### Start Year:")),
+                    dbc.Col(dcc.Markdown("###### End Year:")),
+                    dbc.Col()]),
+            dbc.Row([dbc.Col(dbc.Input(id="range-rank-start", placeholder='Start year...', type='text')),
+                    dbc.Col(dbc.Input(id="range-rank-end", placeholder='End year...', type='text')),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='range-rank-button'))]),
+            html.Br(),
+            dcc.Markdown("###### Rank by Single Year:"),
+            dbc.Row([dbc.Col(dbc.Input(id="year-rank", placeholder='Enter year...', type='text')),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='year-rank-button'))]),
+            html.Br(),
+            dcc.Markdown("###### Rank by Actor:"),
+            dbc.Row([dbc.Col(dbc.Input(id="actor-rank", placeholder='Enter actor...', type='text')),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='actor-rank-button'))])]),
+
+            # begin data entry side of page
             dbc.Col(
                 html.Div("No Ranking Selected", id="rank-data"))])])
+# 1892
 
 
 # body for the reccomend functionality

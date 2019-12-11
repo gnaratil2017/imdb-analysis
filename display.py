@@ -36,6 +36,22 @@ def createTableRank(data):
 
 	return table
 
+def createTableRecommendation(data):
+	table_header = [html.Thead(html.Tr([html.Th("Movie Name"), html.Th("Genre"), html.Th("Rating"), html.Th("Number of Ratings"), html.Th("Release Year")]))]
+	
+	rows = []
+
+	for i in range(len(data)):
+		row = html.Tr([html.A(href = 'https://www.imdb.com/title/' + data[i][0] + '/', children = html.Td(data[i][1]), target='_blank'), html.Td(data[i][3]), html.Td(data[i][4]), html.Td(data[i][5]), html.Td(data[i][2])])
+		rows.append(row)
+
+	table_body = [html.Tbody(rows)]
+
+	table = dbc.Table(table_header + table_body, bordered=True, striped = True, hover=True)
+
+	return table
+
+
 def createGraphAvgRatings():
 	y_data = getGenreAvgRatings()
 	x_data = ['Action', 'Comedy', 'Documentary', 'Drama', 'Horror', 'Romance']

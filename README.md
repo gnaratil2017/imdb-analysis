@@ -30,16 +30,16 @@ The app can do the following things:
 
 ## File Overview
 
-**_app.py_** :   source code for front-end display of the app
+**_app.py_** :   source code for front-end display of the app (Contributor: Daniel Urke)
 
-**_display.py_** :  code containing function to represent given information in a table format
+**_display.py_** :  code containing function to represent given information in a table format (Contributor: Daniel Urke)
 
-**_search.py_** :  source code for search component
+**_search.py_** :  source code for search component (Contributor: Greg Naratil)
 
-**_rank.py_** :  source code for ranking component
+**_rank.py_** :  source code for ranking component (Contributor: Tom Wallenstein)
 
-**_recommendation.py_** :  source code for recommandation component
+**_recommendation.py_** :  source code for recommendation component (Contributors: Thomas Bischoff & Greg Naratil)
 
-**_stats.py_** : source code for generating the statistics used in the
+**_stats.py_** : source code for generating the statistics used in the application (Contributors: Tom Wallenstein & Greg Naratil)
 
-**_/assets_** : requirement of dash, holds the static assets of the application
+**_/assets_** : requirement of dash, holds the static assets of the application (Contributor: Tom Wallenstein (logo))

@@ -20,6 +20,13 @@ The app can do the following things:
   	- person involved in production 
 
  - Recommend productions similiar to the production specified
+ 	- calculates similarity score based on following features:
+		- type
+		- if it is adult film 
+		- startYear
+		- genres
+		- director
+		- writers
 
 ## File Overview
 

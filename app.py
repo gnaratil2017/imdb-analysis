@@ -4,10 +4,10 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
+from python_sql_driver import search
+from display import createTableSearch
 
-# from python_sql_driver import search
-
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
 # required because not all callback inputs and outputs are present upon loading
 app.config.suppress_callback_exceptions = True
@@ -39,60 +39,70 @@ navbar = dbc.NavbarSimple(
 body = html.Div(id="body-hold", className="mt-3")
 
 # the body for the search functionality
-# thinking about potentially making these into dropdowns instead of inputs
+# might want to put these all in rows so they are spaced out
 search_body = html.Div([
-    dbc.Row([dbc.Col(
+    dbc.Row([dbc.Col([
                 # title input
-                [dcc.Markdown("## Search for movies by title, genre, actors, or type!"),
-                 dcc.Markdown("###### Type information into one of the input boxes below and click the corresponding button to search for movies."),
-                 html.Div("Enter a Title:"),
-                 dcc.Input(
-                    placeholder='Title',
-                    type='text',
-                    value='',
-                    id="search-title"),
-                 html.Button("Search for movies based on title", id='title-button', n_clicks_timestamp=0),
-                 # genre input
-                 html.Div("Enter a Genre:"),
-                 dcc.Input(
-                    placeholder='Genre',
-                    type='text',
-                    value='',
-                    id="search-genre"),
-                 html.Button("Search for movies of the same genre", id='genre-button', n_clicks_timestamp=0),
-                 # actor input
-                 html.Div("Enter an Actor/Actress:"),
-                 dcc.Input(
-                    placeholder='Actor',
-                    type='text',
-                    value='',
-                    id="search-actor"),
-                 html.Button("Search for movies by actor/actress", id='actor-button', n_clicks_timestamp=0),
-                 # type input
-                 html.Div("Enter a Type of Movie (alternative, dvd, festival, tv, video):"),
-                 dcc.Input(
-                    placeholder='Type',
-                    type='text',
-                    value='',
-                    id="search-type"),
-                 html.Button("Search for movies of the same type", id='type-button', n_clicks_timestamp=0)]),
+             dcc.Markdown("## Search for films by title, genre, actors, or type"),
+             dcc.Markdown("###### Type information into the input boxes to search for films."),
+             html.Div("Enter a Title:"),
+             dcc.Input(
+                placeholder='Title',
+                type='text',
+                value='',
+                id="search-title"),
+             # genre input
+             html.Div("Enter a Genre:"),
+             dcc.Input(
+                placeholder='Genre',
+                type='text',
+                value='',
+                id="search-genre"),
+             # actor input
+             html.Div("Enter an Actor/Actress:"),
+             dcc.Input(
+                placeholder='Actor',
+                type='text',
+                value='',
+                id="search-actor"),
+             # type input
+             html.Div("Enter a Type of Movie (alternative, dvd, festival, tv, video):"),
+             dcc.Input(
+                placeholder='Type',
+                type='text',
+                value='',
+                id="search-type"),
+             dbc.Button("Search for movies", color='success', id='search-button')]),
                 
              dbc.Col(
                 html.Div(["Movie Data"], id="search-movie-data"))])])
 
+
 # body for the rank functionality
 rank_body = html.Div([
-    html.Div("Choose a category/attribute to rank by:"),
-    # TODO: write a function to generate these options
-    dcc.Dropdown(
-        options=[
-            {'label': 'Genre - Comedy', 'value': 'g_comedy'},
-            {'label': 'Year - 2016', 'value': 'y_2016'},
-            {'label': 'Actor - Emily Blunt', 'value': 'a_emily_blunt'}
-        ],
-        value='MTL'),
-    html.Div("Top Movies:"),
-    html.Div(id="rank-movie-data")])
+    dbc.Row([dbc.Col([
+            dcc.Markdown("## Rank films by genre, type, actor, year, etc."),  
+            dcc.Markdown("##### Choose a category/attribute to rank by. Click the rank button to submit the ranking"),
+            
+            # filter stuff
+            dbc.Row([dbc.Col([dcc.Markdown("###### Filter By Type:"),
+                            dbc.Select(id = 'type-filter',
+                                        options=[
+                                            {'label':'Movies', 'value':'movie'},
+                                            {'label':'Shorts', 'value':'short'},
+                                            {'label':'TV Series', 'value':'tvSeries'}],
+                                        value="movie")]),
+                     dbc.Col([dcc.Markdown("###### Choose minimum ratings for ranked films:"),
+                              dbc.Input(id="min-ratings", value=10000, type='number', min=0, step=1)])]),
+            dcc.Markdown("###### Rank by Genre:"),
+            dbc.Row([dbc.Col(dbc.Select(id='genre-rank-select',
+                                       options=[
+                                            {'label': 'stand-in', 'value': 'null'}])),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='genre-rank-button'))]),
+            dcc.Markdown("###### Rank by Type:")]),
+            dbc.Col(
+                html.Div("No Ranking Selected", id="rank-data"))])])
+
 
 # body for the reccomend functionality
 recommend_body = html.Div([
@@ -111,34 +121,22 @@ app.layout = html.Div([navbar, body])
 
 
 #callback for the search function
-# search() takes 5 arguments, the four values of the input boxes and what button was clicked
-# 1 for title, 2 for genre, 3 for actor, 4 for type
 @app.callback(
     Output("search-movie-data", "children"),
-    [Input("title-button", "n_clicks_timestamp"),
-     Input("genre-button", "n_clicks_timestamp"),
-     Input("actor-button", "n_clicks_timestamp"),
-     Input("type-button", "n_clicks_timestamp")],
+    [Input("search-button", "n_clicks")],
     [State('search-title', "value"),
      State('search-genre', "value"),
      State('search-actor', "value"),
      State('search-type', "value")]
 )
-def search_for_movie(title_click, genre_click, actor_click, type_click, title_value, genre_value, actor_value, type_value):
-    time_max = max(int(title_click), int(genre_click), int(actor_click), int(type_click))
-    if time_max == int(title_click):
-        # data = search(title_value, genre_value, actor_value, type_value, 1)
-        data = title_value
-    if time_max == int(genre_click):
-        # data = search(title_value, genre_value, actor_value, type_value, 2)
-        data = genre_value
-    if time_max == int(actor_click):
-        # data = search(title_value, genre_value, actor_value, type_value, 3)
-        data = actor_value
-    if time_max == int(type_click):
-        # data = search(title_value, genre_value, actor_value, type_value, 4)
-        data = type_value
-    return data
+def search_for_movie(search_click, title_value, genre_value, actor_value, type_value):
+    # data = search(title_value, genre_value, actor_value, type_value)
+    if title_value == '' and genre_value == '' and actor_value == '' and type_value == '':
+        return "No Movie Searched For"
+    else:
+        data = search(title_value, genre_value, actor_value, type_value)
+        table = createTableSearch(data)
+        return table
 
 # callback for ranking
 # @app.callback(

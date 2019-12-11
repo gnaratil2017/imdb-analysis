@@ -16,7 +16,7 @@ def sortByRating(item):
 
 def get_tconst_data(tconsts, titleType, numVotes):
 	data = []
-	query = "SELECT tconst, primaryTitle, averageRating, numVotes FROM title_basics_with_ratings WHERE tconst = %s AND titleType = %s AND numVotes >= %s"
+	query = "SELECT tconst, primaryTitle, startYear, averageRating, numVotes FROM title_basics_with_ratings WHERE tconst = %s AND titleType = %s AND numVotes >= %s"
 	for tconst in tconsts:
 		args = (tconst, titleType, numVotes)
 		mycursor.execute(query, args)
@@ -48,7 +48,7 @@ def rankedByActor(titleType, primaryName, numVotes, nElements):
 def rankedByType(filmtype, numVotes, nElements):
 	t1 = (filmtype, numVotes, nElements)
 
-	Q = "SELECT tconst, primaryTitle, averageRating, numVotes FROM title_basics_with_ratings WHERE titleType = %s AND numVotes >= %s ORDER BY averageRating DESC LIMIT %s"
+	Q = "SELECT tconst, primaryTitle, startYear, averageRating, numVotes FROM title_basics_with_ratings WHERE titleType = %s AND numVotes >= %s ORDER BY averageRating DESC LIMIT %s"
 	mycursor.execute(Q, t1)
 
 	return mycursor.fetchall()
@@ -67,10 +67,11 @@ def rankedByYear(titleType, year, numVotes, nElements):
 def rankedByGenre(titleType, genre, numVotes, nElements):
 	t = (titleType, genre, numVotes, nElements)
 
-	Q = "SELECT tconst, primaryTitle, averageRating, numVotes FROM title_basics_with_ratings WHERE titleType = %s AND genres LIKE CONCAT('%', %s, '%') AND numVotes >= %s ORDER BY averageRating DESC LIMIT %s"
+	Q = "SELECT tconst, primaryTitle, startYear, averageRating, numVotes FROM title_basics_with_ratings WHERE titleType = %s AND genres LIKE CONCAT('%', %s, '%') AND numVotes >= %s ORDER BY averageRating DESC LIMIT %s"
 	mycursor.execute(Q, t)
 	
 	return mycursor.fetchall()
 
-# print(rankedByGenre("movie","Drama", 10000, 10))
+print(rankedByGenre("tvSeries","Game-Show", 0, 10))
 # print(rankedByActor("movie","Tom Hanks", 0, 25))
+# print(rankedByType("tvSeries", 10000, 25))

@@ -36,7 +36,7 @@ The app can do the following things:
 
 **_search.py_** :  source code for search component
 
-**_ranking.py_** :  source code for ranking component
+**_rank.py_** :  source code for ranking component
 
 **_recommendation.py_** :  source code for recommandation component
 

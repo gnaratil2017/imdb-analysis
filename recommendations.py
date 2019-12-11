@@ -18,4 +18,4 @@ def getTitles(primaryTitle):
 	data = mycursor.fetchall()
 	return data
 
-print(getTitles("Iron Man"))
+# print(getTitles("Iron Man"))

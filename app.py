@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output, State
 from python_sql_driver import search
 from display import *
 from ranking_new import *
+from recommendations import *
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
@@ -44,36 +45,46 @@ body = html.Div(id="body-hold", className="mt-3")
 search_body = html.Div([
     dbc.Row([dbc.Col([
                 # title input
-             dcc.Markdown("## Search for films by title, genre, actors, or type"),
-             dcc.Markdown("###### Type information into the input boxes to search for films."),
-             html.Div("Enter a Title:"),
+             dcc.Markdown("# Search!"),
+             dcc.Markdown("#### Search for films by title, genre, person involved, or type"),
+             dcc.Markdown("##### Type information into the input boxes to search for films."),
+             html.Br(),
+             dcc.Markdown("###### Enter a Title:"),
              dcc.Input(
-                placeholder='Title',
+                placeholder='Title...',
                 type='text',
                 value='',
                 id="search-title"),
              # genre input
-             html.Div("Enter a Genre:"),
+             html.Br(),
+             html.Br(),
+             dcc.Markdown("###### Enter a Genre:"),
              dcc.Input(
-                placeholder='Genre',
+                placeholder='Genre...',
                 type='text',
                 value='',
                 id="search-genre"),
              # actor input
-             html.Div("Enter an Actor/Actress:"),
+             html.Br(),
+             html.Br(),
+             dcc.Markdown("###### Enter a person involved in making movies:"),
              dcc.Input(
-                placeholder='Actor',
+                placeholder='Person...',
                 type='text',
                 value='',
-                id="search-actor"),
+                id="search-person"),
              # type input
-             html.Div("Enter a Type of Movie (alternative, dvd, festival, tv, video):"),
+             html.Br(),
+             html.Br(),
+             dcc.Markdown("###### Enter a Type of Movie (alternative, dvd, festival, tv, video):"),
              dcc.Input(
-                placeholder='Type',
+                placeholder='Type...',
                 type='text',
                 value='',
                 id="search-type"),
-             dbc.Button("Search for movies", color='success', id='search-button')]),
+             html.Br(),
+             html.Br(),
+             dbc.Row(dbc.Col(dbc.Button("Search for movies", color='success', id='search-button')))]),
                 
              dbc.Col(
                 html.Div(["Movie Data"], id="search-movie-data"))])])
@@ -164,15 +175,39 @@ rank_body = html.Div([
 
 # body for the reccomend functionality
 recommend_body = html.Div([
-    html.Div("Choose a movie and we will reccomend highly rated movies that are similar:"),
-    dcc.Dropdown(
-        # TODO: write a function to generate these options, values can be the ids
-        options=[
-            {'label': 'Iron Man 3', 'value': '102044'},
-            {'label': 'Interstellar', 'value': '923402'},
-            {'label': 'Inception', 'value': '0293432'}
-        ],
-        value='MTL'),])
+    dbc.Row([dbc.Col([
+            dcc.Markdown("# Best Recommendations"),
+            dcc.Markdown("##### Type a movie in the box below and click search."),
+            dcc.Markdown("##### The five buttons below will then update with movie titles."),
+            dcc.Markdown("##### To get recommendations, just click go next to the movie you want."),
+            html.Br(),
+            dcc.Markdown("###### Search for Movie:"),
+            dbc.Row([dbc.Col(dbc.Input(id='rec-movie-entry', placeholder='Enter movie...', type='text')),
+                    dbc.Col(dbc.Button("Search!", id='rec-movie-button', color='success', n_clicks_timestamp=0))]),
+            html.Br(),
+            dcc.Markdown("###### Select one of the movies below to get recommendations for:"),
+            dbc.Row([dbc.Col(dcc.Markdown("Production 1", id='rec1-label'), width='auto'),
+                    dbc.Col(dbc.Button("Go!", id='rec1-go', color='success', n_clicks_timestamp=0))]),
+            html.Br(),
+            dbc.Row([dbc.Col(dcc.Markdown("Production 2", id='rec2-label'), width='auto'),
+                    dbc.Col(dbc.Button("Go!", id='rec2-go', color='success', n_clicks_timestamp=0))]),
+            html.Br(),
+            dbc.Row([dbc.Col(dcc.Markdown("Production 3", id='rec3-label'), width='auto'),
+                    dbc.Col(dbc.Button("Go!", id='rec3-go', color='success', n_clicks_timestamp=0))]),
+            html.Br(),
+            dbc.Row([dbc.Col(dcc.Markdown("Production 4", id='rec4-label'), width='auto'),
+                    dbc.Col(dbc.Button("Go!", id='rec4-go', color='success', n_clicks_timestamp=0))]),
+            html.Br(),
+            dbc.Row([dbc.Col(dcc.Markdown("Production 5", id='rec5-label'), width='auto'),
+                    dbc.Col(dbc.Button("Go!", id='rec5-go', color='success', n_clicks_timestamp=0))]),
+            html.Div("tt1375666", id='rec1-data', style={'display' : 'none'}),
+            html.Div("tt0468569", id='rec2-data', style={'display' : 'none'}),
+            html.Div("tt0083658", id='rec3-data', style={'display' : 'none'}),
+            html.Div("tt3315342", id='rec4-data', style={'display' : 'none'}),
+            html.Div("tt0090605", id='rec5-data', style={'display' : 'none'}),
+            ]),
+            dbc.Col(
+                html.Div("No Recommendations Yet", id="recommend-data"))])])
 
 
 app.layout = html.Div([navbar, body])
@@ -184,17 +219,18 @@ app.layout = html.Div([navbar, body])
     [Input("search-button", "n_clicks")],
     [State('search-title', "value"),
      State('search-genre', "value"),
-     State('search-actor', "value"),
+     State('search-person', "value"),
      State('search-type', "value")]
 )
-def search_for_movie(search_click, title_value, genre_value, actor_value, type_value):
-    # data = search(title_value, genre_value, actor_value, type_value)
-    if title_value == '' and genre_value == '' and actor_value == '' and type_value == '':
+def search_for_movie(search_click, title_value, genre_value, person_value, type_value):
+    # data = search(title_value, genre_value, person_value, type_value)
+    if title_value == '' and genre_value == '' and person_value == '' and type_value == '':
         return "No Movie Searched For"
     else:
-        data = search(title_value, genre_value, actor_value, type_value)
+        data = search(title_value, genre_value, person_value, type_value)
         table = createTableSearch(data)
         return table
+
 
 #callback for ranking function
 @app.callback(
@@ -246,13 +282,84 @@ def search_for_movie(genre_click, type_click, range_click, year_click, actor_cli
     return max_time
 
 
-# callback for recommendations
-# @app.callback(
-#     Output("search-movie-data", "children"),
-#     [Input("search-title", "value")]
-# )
-# def search_for_movie(movie_string):
-#     return movie_string
+#callback for generating the options for recommendations
+@app.callback(
+    [Output("rec1-data", "children"),
+     Output("rec2-data", "children"),
+     Output("rec3-data", "children"),
+     Output("rec4-data", "children"),
+     Output("rec5-data", "children"),
+     Output("rec1-label", "children"),
+     Output("rec2-label", "children"),
+     Output("rec3-label", "children"),
+     Output("rec4-label", "children"),
+     Output("rec5-label", "children")],
+     [Input("rec-movie-button", "n_clicks")],
+     [State("rec-movie-entry", "value")])
+def find_movie_options(n_click, search_title):
+    if n_click == 0:
+        return "tt1375666", "tt0468569", "tt0083658", "tt3315342", "tt0090605", "Production 1", "Production 2", "Production 3", "Production 4", "Production 5"
+    data = getTitles(search_title)
+    if len(data) == 0:
+        return "tt1375666", "tt0468569", "tt0083658", "tt3315342", "tt0090605", "Production 1", "Production 2", "Production 3", "Production 4", "Production 5"
+    if len(data) == 1:
+        return data[0][0], "tt0468569", "tt0083658", "tt3315342", "tt0090605", data[0][1], "Production 2", "Production 3", "Production 4", "Production 5"
+    if len(data) == 2:
+        return data[0][0], data[1][0], "tt0083658", "tt3315342", "tt0090605", data[0][1], data[1][1], "Production 3", "Production 4", "Production 5"
+    if len(data) == 3:
+        return data[0][0], data[1][0], data[2][0], "tt3315342", "tt0090605", data[0][1], data[1][1], data[2][1], "Production 4", "Production 5"
+    if len(data) == 4:
+        return data[0][0], data[1][0], data[2][0], data[3][0], "tt0090605", data[0][1], data[1][1], data[2][1], data[3][1], "Production 5"
+    if len(data) == 5:
+        return data[0][0], data[1][0], data[2][0], data[3][0], data[4][0], data[0][1], data[1][1], data[2][1], data[3][1], data[4][1]
+    return none
+
+#callback for recommendations generation
+@app.callback(
+    Output("recommend-data", "children"),
+    [Input("rec1-go", "n_clicks_timestamp"),
+     Input("rec2-go", "n_clicks_timestamp"),
+     Input("rec3-go", "n_clicks_timestamp"),
+     Input("rec4-go", "n_clicks_timestamp"),
+     Input("rec5-go", "n_clicks_timestamp")],
+    [State('rec1-data', 'children'),
+     State('rec2-data', "children"),
+     State('rec3-data', "children"),
+     State('rec4-data', "children"),
+     State('rec5-data', "children")]
+)
+def recommend_movie(rec1_click, rec2_click, rec3_click, rec4_click, rec5_click, rec1_data, rec2_data, rec3_data, rec4_data, rec5_data):
+    if rec1_click == 0 and rec2_click == 0 and rec3_click == 0 and rec4_click == 0 and rec5_click == 0:
+        return "Submit a recommendation on the left!"
+    max_time = max(rec1_click, rec2_click, rec3_click, rec4_click, rec5_click)
+
+    if max_time == rec1_click:
+        # data = rankedByGenre(type_filter, genre_data, ratings_filter, 25)
+        # table = createTableRank(data)
+        return rec1_data
+
+    if max_time == rec2_click:
+        # data = rankedByType(type_data, ratings_filter, 25)
+        # table = createTableRank(data) 
+        return rec2_data
+
+    if max_time == rec3_click:
+        # data = rankedByTimePeriod(type_filter, range_start, range_end, ratings_filter, 25)
+        # table = createTableRank(data)
+        return rec3_data
+
+    if max_time == rec4_click:
+        # data = rankedByYear(type_filter, year_data, ratings_filter, 25)
+        # table = createTableRank(data)
+        return rec4_data
+
+    if max_time == rec5_click:
+        # data = rankedByActor(type_filter, actor_data, ratings_filter, 25)
+        # table = createTableRank(data)
+        return rec5_data
+
+    return max_time
+
 
 
 # callback to toggle the different parts of the app

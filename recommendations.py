@@ -66,5 +66,3 @@ def getSimilarTitles(tconst):
 	mycursor.execute(query, args)
 	result = mycursor.fetchall()
 	return result
-
-print(getSimilarTitles("tt0000001"))

@@ -4,9 +4,9 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-from python_sql_driver import search
+from search import search
 from display import *
-from ranking_new import *
+from rank import *
 from recommendations import *
 import plotly.graph_objects as go
 

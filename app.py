@@ -18,7 +18,7 @@ app.config.suppress_callback_exceptions = True
 # this sets up the basic navigation bar
 navbar = dbc.NavbarSimple(
     children=[
-        dbc.NavItem(html.Img(src= app.get_asset_url('dblogo1.png'), height='52px')),
+        dbc.NavItem(html.Img(src= app.get_asset_url('dblogo2.png'), height='52px')),
         dbc.NavItem(dbc.NavLink("See Code", href="https://github.com/gnaratil2017/imdb-analysis")),
         dbc.DropdownMenu(
             nav=True,
@@ -295,7 +295,7 @@ def search_for_movie(genre_click, type_click, range_click, year_click, actor_cli
         table = createTableRank(data)
         return table
 
-    return max_time
+    return "Submit a ranking on the left!"
 
 
 #callback for generating the options for recommendations
@@ -328,7 +328,7 @@ def find_movie_options(n_click, search_title):
         return data[0][0], data[1][0], data[2][0], data[3][0], "tt0090605", data[0][1], data[1][1], data[2][1], data[3][1], "Production 5"
     if len(data) == 5:
         return data[0][0], data[1][0], data[2][0], data[3][0], data[4][0], data[0][1], data[1][1], data[2][1], data[3][1], data[4][1]
-    return none
+    return "tt1375666", "tt0468569", "tt0083658", "tt3315342", "tt0090605", "Production 1", "Production 2", "Production 3", "Production 4", "Production 5"
 
 #callback for recommendations generation
 @app.callback(
@@ -373,6 +373,8 @@ def recommend_movie(rec1_click, rec2_click, rec3_click, rec4_click, rec5_click, 
         data = getSimilarTitles(rec5_data)
         table = createTableRank(data)
         return table
+
+    return "Submit a recommendation on the left!"
 
 
 # callback to toggle the different parts of the app

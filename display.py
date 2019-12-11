@@ -1,7 +1,7 @@
 import dash
 import dash_html_components as html
 import dash_bootstrap_components as dbc
-from python_sql_driver import search
+from search import search
 from stats import *
 import plotly.graph_objects as go
 

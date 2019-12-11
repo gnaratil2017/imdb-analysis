@@ -28,6 +28,8 @@ navbar = dbc.NavbarSimple(
                 dbc.DropdownMenuItem("See Rankings", id = "rank", n_clicks_timestamp='0'),
                 dbc.DropdownMenuItem(divider=True),
                 dbc.DropdownMenuItem("Get Movie Recommendations", id = "recommend", n_clicks_timestamp='0'),
+                dbc.DropdownMenuItem(divider=True),
+                dbc.DropdownMenuItem("Movie Statistics", id='statistics', n_clicks_timestamp='0')
             ],
             id = "nav-dropdown"
         ),
@@ -209,6 +211,8 @@ recommend_body = html.Div([
             dbc.Col(
                 html.Div("No Recommendations Yet", id="recommend-data"))])])
 
+stats_body = html.Div("No Stats Provided Yet")
+
 
 app.layout = html.Div([navbar, body])
 
@@ -367,15 +371,20 @@ def recommend_movie(rec1_click, rec2_click, rec3_click, rec4_click, rec5_click, 
     Output("body-hold", "children"),
     [Input("search", "n_clicks_timestamp"),
      Input("rank", "n_clicks_timestamp"),
-     Input("recommend", "n_clicks_timestamp")],
+     Input("recommend", "n_clicks_timestamp"),
+     Input("statistics", "n_clicks_timestamp")],
 )
-def update_application_view(search_click, rank_click, recommend_click):
-    if int(search_click) > int(rank_click) and int(search_click) > int(recommend_click):
+def update_application_view(search_click, rank_click, recommend_click, stats_click):
+    time_max = max(int(search_click), int(rank_click), int(recommend_click), int(stats_click))
+
+    if int(search_click) == time_max:
         return search_body
-    elif int(rank_click) > int(search_click) and int(rank_click) > int(recommend_click):
+    elif int(rank_click) == time_max:
         return rank_body
-    elif int(recommend_click) > int(rank_click) and int(recommend_click) > int(search_click):
+    elif int(recommend_click) == time_max:
         return recommend_body
+    elif int(stats_click) == time_max:
+        return stats_body
     else:
         return search_body
 

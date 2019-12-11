@@ -1,6 +1,6 @@
 import mysql.connector
 
-mydb = mysql.connector.connect(user='root', passwd='ThisClassFuckingSucks666!', database='imdb')
+mydb = mysql.connector.connect(user='root', password='MySQL2019', database='imdb')
 mycursor = mydb.cursor()
 
 def get_tconst_data(tconsts, primaryTitle, genre, titleType):
@@ -114,4 +114,4 @@ def search(primaryTitle, genre, primaryName, titleType):
 
     return data
 
-# search(" S", "ro", "Ingmar Bergman", "movie")
+

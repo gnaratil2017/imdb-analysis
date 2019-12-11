@@ -12,7 +12,7 @@ The app can do the following things:
 	- its type,
 	- any combination of them
 	
-![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/search.png)
+![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/search.png "Search")
 	
  - Rank productions according its average ratings if it received a minimun number of votes from IMDb users in the following categories:
   	- genres (Action, Comedy, Documentary, Fantasy, Sci-Fi, etc.)
@@ -21,7 +21,7 @@ The app can do the following things:
   	- year
   	- person involved in production
 	
-![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/rank.png)
+![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/rank.png "Ranking")
 
  - Recommend productions similiar to the production specified
  	- calculates similarity score based on following features:
@@ -32,11 +32,11 @@ The app can do the following things:
 		- director
 		- writers
 		
-![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/recommend.png)
+![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/recommend.png "Recommendation")
 
 - Show statistics about productions in the IMDb database
 
-![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/Stats.png)
+![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/Stats.png "Statistics")
 
 ## File Overview
 

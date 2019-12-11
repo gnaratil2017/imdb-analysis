@@ -40,4 +40,6 @@ The app can do the following things:
 
 **_recommendation.py_** :  source code for recommandation component
 
+**_stats.py_** : source code for generating the statistics used in the
 
+**_/assets_** : requirement of dash, holds the static assets of the application

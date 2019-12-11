@@ -1,6 +1,6 @@
 # imdb-analysis
 
-This project creates an online app, which makes it possible to search, rank, and find related productions in the IMDB database. The app uses Dash to display the front-end. In the back-end, it uses a MySQL database, which contains tables with information about movies, in th back-end. 
+This project creates an online app, which makes it possible to search, rank, and find related productions in the IMDb database. The app uses Dash to display the front-end. In the back-end, it uses a MySQL database, which contains tables with information about movies, in th back-end. 
 
 ## App Functionality
 
@@ -12,12 +12,16 @@ The app can do the following things:
 	- its type,
 	- any combination of them
 	
- - Rank productions according its average ratings if it received a minimun number of votes from IMDB users in the following categories:
+![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/search.png)
+	
+ - Rank productions according its average ratings if it received a minimun number of votes from IMDb users in the following categories:
   	- genres (Action, Comedy, Documentary, Fantasy, Sci-Fi, etc.)
   	- type (movie, TV series, short, TV movie, etc.)
   	- time interval (e.g. 2010 - 2015)
   	- year
-  	- person involved in production 
+  	- person involved in production
+	
+![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/rank.png)
 
  - Recommend productions similiar to the production specified
  	- calculates similarity score based on following features:
@@ -27,6 +31,12 @@ The app can do the following things:
 		- genres
 		- director
 		- writers
+		
+![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/recommend.png)
+
+- Show statistics about productions in the IMDb database
+
+![alt text](https://github.com/gnaratil2017/imdb-analysis/tree/master/readme_photos/Stats.png)
 
 ## File Overview
 

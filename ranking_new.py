@@ -72,6 +72,6 @@ def rankedByGenre(titleType, genre, numVotes, nElements):
 	
 	return mycursor.fetchall()
 
-print(rankedByGenre("tvSeries","Game-Show", 0, 10))
+# print(rankedByGenre("tvSeries","Game-Show", 0, 10))
 # print(rankedByActor("movie","Tom Hanks", 0, 25))
 # print(rankedByType("tvSeries", 10000, 25))

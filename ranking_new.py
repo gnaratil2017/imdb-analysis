@@ -3,7 +3,7 @@ import mysql.connector
 def connectToDB():
 	db = mysql.connector.connect(
 		user="root",
-		password="ThisClassFuckingSucks666!",
+		password="MySQL2019",
 		database="imdb"
 		)
 	return db

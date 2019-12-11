@@ -5,7 +5,8 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from python_sql_driver import search
-from display import createTableSearch
+from display import *
+from ranking_new import *
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
@@ -81,9 +82,9 @@ search_body = html.Div([
 # body for the rank functionality
 rank_body = html.Div([
     dbc.Row([dbc.Col([
-            dcc.Markdown("## Rank films by genre, type, actor, year, etc."),  
-            dcc.Markdown("##### Choose a category/attribute to rank by. Click the rank button to submit the ranking"),
-            
+            dcc.Markdown("## Rank films by genre, type, actor, year"),  
+            dcc.Markdown("##### Choose a category/attribute to rank by. Click the rank button to submit the ranking."),
+            dcc.Markdown("##### If no results are appearing, try reducing the minimum number of rankings filter."),
             # filter stuff
             dbc.Row([dbc.Col([dcc.Markdown("###### Filter By Type:"),
                             dbc.Select(id = 'type-filter',
@@ -93,21 +94,52 @@ rank_body = html.Div([
                                             {'label':'TV Series', 'value':'tvSeries'}],
                                         value="movie")]),
                      dbc.Col([dcc.Markdown("###### Choose minimum ratings for ranked films:"),
-                              dbc.Input(id="min-ratings", value=10000, type='number', min=0, step=1)])]),
+                              dbc.Input(id="min-ratings", value=500000, type='number', min=0, step=1)])]),
             html.Br(),
             dcc.Markdown("###### Rank by Genre:"),
             dbc.Row([dbc.Col(dbc.Select(id='genre-rank',
                                        options=[
-                                            {'label': 'stand-in', 'value': 'null'}])),
-                    dbc.Col(dbc.Button("Rank!", color='success', id='genre-rank-button'))]),
+                                            {'label':'Action', 'value':'Action'},
+                                            {'label':'Adventure', 'value':'Adventure'},
+                                            {'label':'Animation', 'value':'Animation'},
+                                            {'label':'Biography', 'value':'Biography'},
+                                            {'label':'Comedy', 'value':'Comedy'},
+                                            {'label':'Crime', 'value':'Crime'},
+                                            {'label':'Documentary', 'value':'Documentary'},
+                                            {'label':'Drama', 'value':'Drama'},
+                                            {'label':'Family', 'value':'Family'},
+                                            {'label':'Fantasy', 'value':'Fantasy'},
+                                            {'label':'Film-Noir', 'value':'Film-Noir'},
+                                            {'label':'Game-Show', 'value':'Game-Show'},
+                                            {'label':'History', 'value':'History'},
+                                            {'label':'Horror', 'value':'Horror'},
+                                            {'label':'Music', 'value':'Music'},
+                                            {'label':'Musical', 'value':'Musical'},
+                                            {'label':'Mystery', 'value':'Mystery'},
+                                            {'label':'News', 'value':'News'},
+                                            {'label':'Reality-TV', 'value':'Reality-TV'},
+                                            {'label':'Romance', 'value':'Romance'},
+                                            {'label':'Sci-Fi', 'value':'Sci-Fi'},
+                                            {'label':'Sport', 'value':'Sport'},
+                                            {'label':'TalkShow', 'value':'TalkShow'},
+                                            {'label':'Thriller', 'value':'Thriller'},
+                                            {'label':'War', 'value':'War'},
+                                            {'label':'Western', 'value':'Western'}])),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='genre-rank-button', n_clicks_timestamp=0))]),
             html.Br(),
             dcc.Markdown("###### Rank by Type (note this overrides the type filter above):"),
             dbc.Row([dbc.Col(dbc.Select(id='type-rank',
                                         options=[
                                                 {'label':'Movies', 'value':'movie'},
-                                                {'label':'Shorts', 'value':'short'},
-                                                {'label':'TV Series', 'value':'tvSeries'}])),
-                    dbc.Col(dbc.Button("Rank!", color='success', id='type-rank-button'))]),
+                                                {'label':'Short', 'value':'short'},
+                                                {'label':'TV Mini-Series', 'value':'tvMiniSeries'},
+                                                {'label':'TV Series', 'value':'tvSeries'},
+                                                {'label':'TV Short', 'value':'tvShort'},
+                                                {'label':'TV Special', 'value':'tvSpecial'},
+                                                {'label':'TV Movie', 'value':'tvMovie'},
+                                                {'label':'Video', 'value':'video'},
+                                                {'label':'Video Game', 'value':'videoGame'}])),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='type-rank-button', n_clicks_timestamp=0))]),
             html.Br(),
             dcc.Markdown("###### Rank by Time Period (will rank all movies within the range below):"),
             dbc.Row([dbc.Col(dcc.Markdown("###### Start Year:")),
@@ -115,20 +147,19 @@ rank_body = html.Div([
                     dbc.Col()]),
             dbc.Row([dbc.Col(dbc.Input(id="range-rank-start", placeholder='Start year...', type='text')),
                     dbc.Col(dbc.Input(id="range-rank-end", placeholder='End year...', type='text')),
-                    dbc.Col(dbc.Button("Rank!", color='success', id='range-rank-button'))]),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='range-rank-button', n_clicks_timestamp=0))]),
             html.Br(),
             dcc.Markdown("###### Rank by Single Year:"),
             dbc.Row([dbc.Col(dbc.Input(id="year-rank", placeholder='Enter year...', type='text')),
-                    dbc.Col(dbc.Button("Rank!", color='success', id='year-rank-button'))]),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='year-rank-button',n_clicks_timestamp=0))]),
             html.Br(),
             dcc.Markdown("###### Rank by Actor:"),
             dbc.Row([dbc.Col(dbc.Input(id="actor-rank", placeholder='Enter actor...', type='text')),
-                    dbc.Col(dbc.Button("Rank!", color='success', id='actor-rank-button'))])]),
+                    dbc.Col(dbc.Button("Rank!", color='success', id='actor-rank-button',n_clicks_timestamp=0))])]),
 
-            # begin data entry side of page
+            # begin data side of page
             dbc.Col(
                 html.Div("No Ranking Selected", id="rank-data"))])])
-# 1892
 
 
 # body for the reccomend functionality
@@ -165,13 +196,55 @@ def search_for_movie(search_click, title_value, genre_value, actor_value, type_v
         table = createTableSearch(data)
         return table
 
-# callback for ranking
-# @app.callback(
-#     Output("search-movie-data", "children"),
-#     [Input("search-title", "value")]
-# )
-# def search_for_movie(movie_string):
-#     return movie_string
+#callback for ranking function
+@app.callback(
+    Output("rank-data", "children"),
+    [Input("genre-rank-button", "n_clicks_timestamp"),
+     Input("type-rank-button", "n_clicks_timestamp"),
+     Input("range-rank-button", "n_clicks_timestamp"),
+     Input("year-rank-button", "n_clicks_timestamp"),
+     Input("actor-rank-button", "n_clicks_timestamp")],
+    [State('type-filter', 'value'),
+     State('min-ratings', "value"),
+     State('genre-rank', "value"),
+     State('type-rank', "value"),
+     State('range-rank-start', "value"),
+     State('range-rank-end', "value"),
+     State('year-rank', "value"),
+     State('actor-rank', 'value')]
+)
+def search_for_movie(genre_click, type_click, range_click, year_click, actor_click, type_filter, ratings_filter, genre_data, type_data, range_start, range_end, year_data, actor_data):
+    if genre_click == 0 and type_click == 0 and range_click == 0 and year_click == 0 and actor_click == 0:
+        return "Submit a ranking on the left!"
+    max_time = max(genre_click, type_click, range_click, year_click, actor_click)
+
+    if max_time == genre_click:
+        data = rankedByGenre(type_filter, genre_data, ratings_filter, 25)
+        table = createTableRank(data)
+        return table
+
+    if max_time == type_click:
+        data = rankedByType(type_data, ratings_filter, 25)
+        table = createTableRank(data) 
+        return table
+
+    if max_time == range_click:
+        data = rankedByTimePeriod(type_filter, range_start, range_end, ratings_filter, 25)
+        table = createTableRank(data)
+        return table
+
+    if max_time == year_click:
+        data = rankedByYear(type_filter, year_data, ratings_filter, 25)
+        table = createTableRank(data)
+        return table
+
+    if max_time == actor_click:
+        data = rankedByActor(type_filter, actor_data, ratings_filter, 25)
+        table = createTableRank(data)
+        return table
+
+    return max_time
+
 
 # callback for recommendations
 # @app.callback(

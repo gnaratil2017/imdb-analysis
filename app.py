@@ -8,6 +8,7 @@ from python_sql_driver import search
 from display import *
 from ranking_new import *
 from recommendations import *
+import plotly.graph_objects as go
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
@@ -17,6 +18,7 @@ app.config.suppress_callback_exceptions = True
 # this sets up the basic navigation bar
 navbar = dbc.NavbarSimple(
     children=[
+        dbc.NavItem(html.Img(src= app.get_asset_url('dblogo1.png'), height='52px')),
         dbc.NavItem(dbc.NavLink("See Code", href="https://github.com/gnaratil2017/imdb-analysis")),
         dbc.DropdownMenu(
             nav=True,
@@ -211,7 +213,17 @@ recommend_body = html.Div([
             dbc.Col(
                 html.Div("No Recommendations Yet", id="recommend-data"))])])
 
-stats_body = html.Div("No Stats Provided Yet")
+animals=['giraffes', 'orangutans', 'monkeys']
+
+fig = go.Figure([go.Bar(x=animals, y=[20, 14, 23])])
+
+stats_body = html.Div([
+    dbc.Row([dbc.Col(dcc.Graph(figure = createGraphAvgRatings(), id='graph1')),
+            dbc.Col(dcc.Graph(figure= createGraphAvgRuntimes(), id='graph2')),
+            dbc.Col(dcc.Graph(figure= createGraphAvgRuntimesType(), id='graph3'))]),
+    dbc.Row([dbc.Col(dcc.Graph(figure= createGraphYearlyMovies(), id='graph4')),
+            dbc.Col(dcc.Graph(figure= createGraphGenreAllTime(), id='graph5')),
+            dbc.Col(dcc.Graph(figure= createGraphTypeYearly(), id='graph6'))])])
 
 
 app.layout = html.Div([navbar, body])

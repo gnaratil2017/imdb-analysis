@@ -12,7 +12,7 @@ db = connectToDB()
 mycursor = db.cursor()
 
 def sortByRating(item):
-	return item[2]
+	return item[3]
 
 def get_tconst_data(tconsts, titleType, numVotes):
 	data = []
@@ -73,5 +73,5 @@ def rankedByGenre(titleType, genre, numVotes, nElements):
 	return mycursor.fetchall()
 
 # print(rankedByGenre("tvSeries","Game-Show", 0, 10))
-# print(rankedByActor("movie","Tom Hanks", 0, 25))
+# print(rankedByActor("movie","Steven Spielberg", 0, 25))
 # print(rankedByType("tvSeries", 10000, 25))

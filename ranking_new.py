@@ -3,7 +3,7 @@ import mysql.connector
 def connectToDB():
 	db = mysql.connector.connect(
 		user="root",
-		password="ThisClassFuckingSucks666!",
+		password="MySQL2019",
 		database="imdb"
 		)
 	return db
@@ -72,6 +72,6 @@ def rankedByGenre(titleType, genre, numVotes, nElements):
 	
 	return mycursor.fetchall()
 
-print(rankedByGenre("tvSeries","Game-Show", 0, 10))
+# print(rankedByGenre("tvSeries","Game-Show", 0, 10))
 # print(rankedByActor("movie","Tom Hanks", 0, 25))
 # print(rankedByType("tvSeries", 10000, 25))

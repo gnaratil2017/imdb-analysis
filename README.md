@@ -5,14 +5,21 @@ This project creates an online app, which makes it possible to search, rank, and
 ## App Functionality
 
 The app can do the following things:
-	- Search for a production according to its title, genre, involved person, type, or any combination of them
-	- Rank productions according its average ratings if it received a minimun number of votes from IMDB users in the following categories:
-		- genres (Action, Comedy, Documentary, Fantasy, Sci-Fi, etc.)
-		- type (movie, tvSeries, short, tv movie, etc.)
-		- time interval (e.g. 2010 - 2015)
-		- year
-		- person involved in production 
-	- Recommend productions similiar to the one specified
+ - Search for a production according to its 
+ 	- title, 
+	- genre, 
+	- involved person, 
+	- type,
+	- any combination of them
+	
+ - Rank productions according its average ratings if it received a minimun number of votes from IMDB users in the following categories:
+  	- genres (Action, Comedy, Documentary, Fantasy, Sci-Fi, etc.)
+  	- type (movie, tvSeries, short, tv movie, etc.)
+  	- time interval (e.g. 2010 - 2015)
+  	- year
+  	- person involved in production 
+
+ - Recommend productions similiar to the production specified
 
 ## File Overview
 

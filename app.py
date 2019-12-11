@@ -350,32 +350,29 @@ def recommend_movie(rec1_click, rec2_click, rec3_click, rec4_click, rec5_click, 
     max_time = max(rec1_click, rec2_click, rec3_click, rec4_click, rec5_click)
 
     if max_time == rec1_click:
-        # data = rankedByGenre(type_filter, genre_data, ratings_filter, 25)
-        # table = createTableRank(data)
-        return rec1_data
+        data = getSimilarTitles(rec1_data)
+        table = createTableRank(data)
+        return table
 
     if max_time == rec2_click:
-        # data = rankedByType(type_data, ratings_filter, 25)
-        # table = createTableRank(data) 
-        return rec2_data
+        data = getSimilarTitles(rec2_data)
+        table = createTableRank(data) 
+        return table
 
     if max_time == rec3_click:
-        # data = rankedByTimePeriod(type_filter, range_start, range_end, ratings_filter, 25)
-        # table = createTableRank(data)
-        return rec3_data
+        data = getSimilarTitles(rec3_data)
+        table = createTableRank(data)
+        return table
 
     if max_time == rec4_click:
-        # data = rankedByYear(type_filter, year_data, ratings_filter, 25)
-        # table = createTableRank(data)
-        return rec4_data
+        data = getSimilarTitles(rec4_data)
+        table = createTableRank(data)
+        return table
 
     if max_time == rec5_click:
-        # data = rankedByActor(type_filter, actor_data, ratings_filter, 25)
-        # table = createTableRank(data)
-        return rec5_data
-
-    return max_time
-
+        data = getSimilarTitles(rec5_data)
+        table = createTableRank(data)
+        return table
 
 
 # callback to toggle the different parts of the app

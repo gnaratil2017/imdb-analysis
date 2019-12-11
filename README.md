@@ -14,7 +14,7 @@ The app can do the following things:
 	
  - Rank productions according its average ratings if it received a minimun number of votes from IMDB users in the following categories:
   	- genres (Action, Comedy, Documentary, Fantasy, Sci-Fi, etc.)
-  	- type (movie, tvSeries, short, tv movie, etc.)
+  	- type (movie, TV series, short, TV movie, etc.)
   	- time interval (e.g. 2010 - 2015)
   	- year
   	- person involved in production 

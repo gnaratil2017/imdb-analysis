@@ -1,6 +1,6 @@
 # imdb-analysis
 
-This project creates an online app, which makes it possible to search, rank, and find related production in the IMDB database. The app uses Dash to display the front-end. In the back-end, it uses a MySQL database, which contains tables with information about movies, in th back-end. 
+This project creates an online app, which makes it possible to search, rank, and find related productions in the IMDB database. The app uses Dash to display the front-end. In the back-end, it uses a MySQL database, which contains tables with information about movies, in th back-end. 
 
 ## App Functionality
 

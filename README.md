@@ -26,7 +26,6 @@ The app can do the following things:
  - Recommend productions similiar to the production specified
  	- calculates similarity score based on following features:
 		- type
-		- if it is adult film 
 		- startYear
 		- genres
 		- director

@@ -351,27 +351,27 @@ def recommend_movie(rec1_click, rec2_click, rec3_click, rec4_click, rec5_click, 
 
     if max_time == rec1_click:
         data = getSimilarTitles(rec1_data)
-        table = createTableRank(data)
+        table = createTableRecommendation(data)
         return table
 
     if max_time == rec2_click:
         data = getSimilarTitles(rec2_data)
-        table = createTableRank(data) 
+        table = createTableRecommendation(data) 
         return table
 
     if max_time == rec3_click:
         data = getSimilarTitles(rec3_data)
-        table = createTableRank(data)
+        table = createTableRecommendation(data)
         return table
 
     if max_time == rec4_click:
         data = getSimilarTitles(rec4_data)
-        table = createTableRank(data)
+        table = createTableRecommendation(data)
         return table
 
     if max_time == rec5_click:
         data = getSimilarTitles(rec5_data)
-        table = createTableRank(data)
+        table = createTableRecommendation(data)
         return table
 
     return "Submit a recommendation on the left!"
